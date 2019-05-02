@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +38,42 @@ class _GoogleOAuthState extends State<GoogleOAuth> {
                     color: Color.fromRGBO(255, 255, 255, 0.6),
                     colorBlendMode: BlendMode.modulate,
                   ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      width: 250.0,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          color: Color(0xffffffff),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.google,
+                                color: Color(0xff000000),
+                              ),
+                              SizedBox(width: 10.0),
+                              Text(
+                                'Sign in with Google',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18.0),
+                              ),
+                            ],
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
