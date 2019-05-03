@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +22,42 @@ class GoogleOAuth extends StatefulWidget {
 }
 
 class _GoogleOAuthState extends State<GoogleOAuth> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<FirebaseUser> _signIn(BuildContext context) async {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sign in'),
+      ),
+    );
+
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken,
+    );
+
+    FirebaseUser userDetails =
+        await _firebaseAuth.signInWithCredential(credential);
+
+    UserDetails details = UserDetails(
+      userDetails.displayName,
+      userDetails.photoUrl,
+      userDetails.email,
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileScreen(detailsUser: details),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +93,11 @@ class _GoogleOAuthState extends State<GoogleOAuth> {
                           ),
                           color: Color(0xffffffff),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Icon(
                                 FontAwesomeIcons.google,
-                                color: Color(0xff000000),
+                                color: Color(0xff42B5F4),
                               ),
                               SizedBox(width: 10.0),
                               Text(
@@ -69,7 +107,9 @@ class _GoogleOAuthState extends State<GoogleOAuth> {
                               ),
                             ],
                           ),
-                          onPressed: () {},
+                          onPressed: () => _signIn(context)
+                              .then((FirebaseUser user) => print(user))
+                              .catchError((e) => print(e)),
                         ),
                       ),
                     ),
@@ -80,4 +120,14 @@ class _GoogleOAuthState extends State<GoogleOAuth> {
       ),
     );
   }
+}
+
+ProfileScreen({UserDetails detailsUser}) {}
+
+// model class
+class UserDetails {
+  final String userName;
+  final String photoUrl;
+  final String userEmail;
+  UserDetails(this.userName, this.photoUrl, this.userEmail);
 }
