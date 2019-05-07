@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'ProfileScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -121,8 +122,6 @@ class _GoogleOAuthState extends State<GoogleOAuth> {
     );
   }
 }
-
-ProfileScreen({UserDetails detailsUser}) {}
 
 // model class
 class UserDetails {
